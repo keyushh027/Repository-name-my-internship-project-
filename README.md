@@ -1,4 +1,5 @@
-#Abstract 
+# Abstract 
+
 Job seekers struggle to find relevant opportunities and employers face difficulties in finding suitable 
 candidates. Traditional job platforms prioritize formal qualifications and hence creating a gap between 
 potential employers and willing workers. To bridge this gap, we propose “Karya Space”, a user friendly 
