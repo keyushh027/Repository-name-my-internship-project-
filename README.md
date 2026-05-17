@@ -30,24 +30,28 @@ and households to find the right people without unnecessary struggles.
 
 # Software Requirement Specification 
 
-1.Introduction to Karya Space  
+## 1.Introduction to Karya Space  
+
 Karya Space is a user-friendly platform that connects local job seekers with employers, making hiring 
 quick and simple. It supports full-time, part-time, and gig jobs while also allowing users to book skilled 
 workers for urgent tasks, all through a safe and secure system.  
-1.1 Purpose of the Requirements Documents  
+
+### 1.1 Purpose of the Requirements Documents  
 The purpose of this Software Requirements Specification (SRS) document is to provide a detailed 
 description of the functional and non-functional requirements for the Karya Space platform. It acts 
 as a blueprint for the design, development, testing, and deployment processes. This document 
 provides a structured framework to guide the project team throughout the development lifecycle, 
 minimizing misunderstandings and ensuring the final product meets the desired objectives.  
-1.2 Scope of the Product  
+
+### 1.2 Scope of the Product  
 The platform’s primary focus is to simplify the hiring process by providing a centralized, safe, and 
 efficient digital space where employers can find reliable workers and job seekers can discover 
 relevant opportunities. The platform will include profile verification, location-based job matching, 
 a matching algorithm based on backend logic, and a controlled communication system. The scope 
 of Karya Space is to connect the employers and job seekers ,with the primary goal of addressing 
-employment gaps in small businesses and community-driven jobs.  
-1.3 References  
+employment gaps in small businesses and community-driven jobs. 
+
+### 1.3 References  
 • IEEE Standard 830-1998: IEEE Recommended Practice for Software Requirements 
 Specifications.  
 • www.googleindia.com  
@@ -57,39 +61,45 @@ Specifications.
 • https://apna.co 
 • https://www.workindia.in 
 • https://www.urbancompany.com 
-1.4 Overview of the Remainder of the Document  
+
+### 1.4 Overview of the Remainder of the Document  
 This section provides a summary of the contents and structure of the remaining document. It helps 
 readers understand how the Software Requirements Specification (SRS) is organized and what 
 information to expect in each section. The document is structured to provide a comprehensive 
 understanding of the Karya Space platform — from its general description and features to specific 
 technical and functional requirements. 
-1. General Description: 
+
+#### 1. General Description: 
 This part explains the overall perspective of the product. It describes how the Karya Space 
 system fits into the current environment, the key features of the platform, types of users (job 
 seekers, employers, and admins), general system constraints, and assumptions made during 
 the design phase. 
-10 
-2. Functional Requirements: 
+
+#### 2. Functional Requirements: 
 This section defines all major functionalities that the system will perform. It includes detailed 
 descriptions of modules such as registration, login, job posting, chat system, profile 
 matching, notification alerts, payment processing, subscription management, rating and 
 review systems, and admin control. Each function includes input, processing, and output 
 details. 
-3. External Interface Requirements: 
+
+#### 3. External Interface Requirements: 
 It describes how the system will interact with external entities. This includes: 
 o User Interfaces (e.g., login page, dashboard, job posting page) 
 o Hardware Interfaces (computers, smartphones, input/output devices) 
 o Software Interfaces (operating systems, browsers, APIs, PDF Reader and databases) 
 o Communication Interfaces (data transfer between frontend, backend, and external 
 services). 
-2 General Description  
-2.1 Product perspective  
+
+## 2 General Description  
+
+### 2.1 Product perspective  
 The platform will rely primarily on its own backend infrastructure during its initial. It will 
 integrate with external services for specific functionalities like Cloud hosting and 
 authentication using services like Firebase or AWS and Secure payment gateways for handling 
 subscription fees. The platform will consist a web application , accessible across various 
 devices, ensuring broad user accessibility.  
-2.2 Product Functions  
+
+### 2.2 Product Functions  
 • User Registration & Login – Allows job seekers and employers to create accounts and 
 access the platform securely.  
 • Profile Management – Users can create, update, and manage their personal or 
@@ -105,10 +115,10 @@ credibility.
 unlock. 
 • Notifications – Sends alerts for new jobs, messages, and application status updates.  
 • On-Demand Services – Allows hiring skilled workers for short-term or urgent tasks. 
-2.3 User Characteristics  
+
+### 2.3 User Characteristics  
 • Job Seekers  
 ➢ These are local people looking for jobs in their nearby area. 
-11 
 ➢  They can use the app to create their profile, search for jobs, and apply 
 for them.  
 ➢ They will get job alerts and can update their status once they are hired. 
@@ -125,8 +135,9 @@ seekers.
 • Admin Users  
 ➢ These are the people who manage the platform.  
 ➢ They approve job posts, verify users, and keep the platform safe. 
-➢ They can remove fake or wrong job posts and solve user complaints.  
-2.4. General Constraints  
+➢ They can remove fake or wrong job posts and solve user complaints. 
+
+### 2.4. General Constraints  
 • Internet Connection Required – The platform works only when there is an active internet 
 connection.  
 • Device Compatibility – The platform should work on Android and web browser.  
@@ -138,7 +149,6 @@ matching and communication.
 2. 5.Assumptions and Dependencies  
 • Third-Party Services Work Properly – The platform depends on services like Payment Gateway 
 (for subscriptions) to work without failure.  
-12 
 • Cloud Server Availability – The system assumes that the cloud servers will stay online and 
 responsive for smooth operations.  
 • User Engagement – It is assumed that users will regularly check notifications and respond to 
