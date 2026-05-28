@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Seeker Portal — KaryaSpace</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif; background: #f7f8fa; color: #1a1a1a;
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2.5rem 1.5rem;
+    }
+    .auth-container {
+      background: #fff; border: 0.5px solid #e0e0e0; border-radius: 16px; padding: 2.5rem 2rem;
+      max-width: 440px; width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.02);
+    }
+    .brand { text-align: center; margin-bottom: 1.5rem; }
+    .brand .logo { font-size: 18px; font-weight: 600; color: #111; letter-spacing: -0.01em; }
+    .role-badge {
+      display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 12px;
+      background: #EEEDFE; color: #534AB7; border: 0.5px solid #7F77DD; margin-top: 6px;
+    }
+    .auth-tabs { display: flex; border-bottom: 1px solid #eee; margin-bottom: 2rem; }
+    .tab-btn {
+      flex: 1; background: none; border: none; padding: 10px 0; font-size: 14px; font-weight: 500;
+      color: #888; cursor: pointer; text-align: center; transition: color 0.15s; position: relative;
+    }
+    .tab-btn.active { color: #534AB7; }
+    .tab-btn.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: #7F77DD; }
+    .form-section { display: none; }
+    .form-section.active { display: block; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: 12px; font-weight: 500; color: #666; margin-bottom: 6px; }
+    .input-wrapper { position: relative; }
+    .input-wrapper i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #999; font-size: 16px; }
+    .input-wrapper .textarea-icon { top: 18px; }
+    .input-wrapper input, .input-wrapper textarea {
+      width: 100%; padding: 10px 12px 10px 36px; font-size: 14px; border-radius: 8px; border: 0.5px solid #ccc;
+      background: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s; font-family: inherit;
+    }
+    .input-wrapper textarea { resize: vertical; min-height: 70px; }
+    .input-wrapper input:focus, .input-wrapper textarea:focus { border-color: #7F77DD; box-shadow: 0 0 0 3px rgba(127, 119, 221, 0.12); }
+    .form-utility { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; font-size: 13px; }
+    .submit-btn {
+      display: block; width: 100%; padding: 11px 0; font-size: 14px; font-weight: 500; border-radius: 8px;
+      border: none; background: #7F77DD; color: #fff; cursor: pointer; margin-top: 1.75rem; transition: opacity 0.15s;
+    }
+    .submit-btn:hover { opacity: 0.9; }
+    .back-link { display: block; text-align: center; font-size: 12px; color: #999; margin-top: 1.5rem; text-decoration: none; }
+    .back-link:hover { color: #666; }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="brand">
+      <div class="logo">KaryaSpace</div>
+      <span class="role-badge">Job Seeker Portal</span>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="tab-btn active" onclick="switchTab('login')">Sign In</button>
+      <button class="tab-btn" onclick="switchTab('register')">Register</button>
+    </div>
+
+    <div id="login-section" class="form-section active">
+      <form onsubmit="event.preventDefault(); window.location.href='jobseeker_ui.html';">
+        <div class="form-group">
+          <label for="login-identity">E-mail / Phone</label>
+          <div class="input-wrapper">
+            <i class="ti ti-user"></i>
+            <input type="text" id="login-identity" placeholder="Enter email or phone number" required value="candidate@gmail.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="login-pass">Password</label>
+          <div class="input-wrapper">
+            <i class="ti ti-lock"></i>
+            <input type="password" id="login-pass" placeholder="••••••••" required value="seeker123">
+          </div>
+        </div>
+        <div class="form-utility">
+          <label style="display: flex; align-items: center; gap: 6px; color:#666; cursor: pointer;">
+            <input type="checkbox"> Remember device
+          </label>
+          <a href="#" style="color: #7F77DD; text-decoration: none;">Forgot password?</a>
+        </div>
+        <button type="submit" class="submit-btn">Sign In</button>
+      </form>
+    </div>
+
+    <div id="register-section" class="form-section">
+      <form onsubmit="event.preventDefault(); alert('Account created successfully!'); window.location.href='jobseeker_ui.html';">
+        <div class="form-group">
+          <label for="reg-name">Name</label>
+          <div class="input-wrapper">
+            <i class="ti ti-id"></i>
+            <input type="text" id="reg-name" placeholder="Your full name" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="reg-email">E-mail</label>
+          <div class="input-wrapper">
+            <i class="ti ti-mail"></i>
+            <input type="email" id="reg-email" placeholder="name@example.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="reg-phone">Phone</label>
+          <div class="input-wrapper">
+            <i class="ti ti-phone"></i>
+            <input type="tel" id="reg-phone" placeholder="Your contact number" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="reg-pass">Password</label>
+          <div class="input-wrapper">
+            <i class="ti ti-lock"></i>
+            <input type="password" id="reg-pass" placeholder="Create secure password" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="reg-address">Address</label>
+          <div class="input-wrapper">
+            <i class="ti ti-map-pin textarea-icon"></i>
+            <textarea id="reg-address" placeholder="Enter your full address" required></textarea>
+          </div>
+        </div>
+        <button type="submit" class="submit-btn">Create Seeker Account</button>
+      </form>
+    </div>
+
+    <a href="index.html" class="back-link">← Change Selection</a>
+  </div>
+
+  <script>
+    function switchTab(type) {
+      const tabs = document.querySelectorAll('.tab-btn');
+      const sections = document.querySelectorAll('.form-section');
+      tabs.forEach(t => t.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+      if(type === 'login') {
+        tabs[0].classList.add('active');
+        document.getElementById('login-section').classList.add('active');
+      } else {
+        tabs[1].classList.add('active');
+        document.getElementById('register-section').classList.add('active');
+      }
+    }
+  </script>
+</body>
+</html>

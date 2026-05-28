@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KaryaSpace — Admin Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col antialiased">
+
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shrink-0"><i class="ti ti-shield-lock"></i></div>
+        <div>
+          <span class="text-sm sm:text-base font-bold text-slate-900 block leading-tight">KaryaSpace Admin</span>
+          <span class="text-[10px] sm:text-[11px] text-slate-500 font-semibold tracking-wide uppercase">Control Terminal</span>
+        </div>
+      </div>
+      <div class="text-[11px] sm:text-xs font-semibold bg-blue-50 border border-blue-200 text-blue-700 px-2.5 py-1.5 rounded-xl flex items-center gap-1.5 shrink-0">
+        <i class="ti ti-user-check"></i> <span>Connected: admin</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="telemetry-grid"></div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+      <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-2 lg:space-y-1">
+        <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase px-2 mb-2">Audit Subroutines</p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-col gap-1.5">
+          <button onclick="switchTab('seekers')" id="tab-btn-seekers" class="flex items-center justify-center lg:justify-start gap-2.5 px-3 py-2 text-[11px] sm:text-xs font-semibold rounded-xl text-left transition-all"><i class="ti ti-users text-blue-600"></i> <span>Job Seekers</span></button>
+          <button onclick="switchTab('employers')" id="tab-btn-employers" class="flex items-center justify-center lg:justify-start gap-2.5 px-3 py-2 text-[11px] sm:text-xs font-semibold rounded-xl text-left transition-all"><i class="ti ti-building text-blue-600"></i> <span>Employers</span></button>
+          <button onclick="switchTab('jobs')" id="tab-btn-jobs" class="flex items-center justify-center lg:justify-start gap-2.5 px-3 py-2 text-[11px] sm:text-xs font-semibold rounded-xl text-left transition-all"><i class="ti ti-list-check text-blue-600"></i> <span>Approvals</span></button>
+          <button onclick="switchTab('feedback')" id="tab-btn-feedback" class="flex items-center justify-center lg:justify-start gap-2.5 px-3 py-2 text-[11px] sm:text-xs font-semibold rounded-xl text-left transition-all"><i class="ti ti-message-report text-blue-600"></i> <span>Feedback</span></button>
+          <button onclick="switchTab('transactions')" id="tab-btn-transactions" class="flex items-center justify-center lg:justify-start gap-2.5 px-3 py-2 text-[11px] sm:text-xs font-semibold rounded-xl text-left transition-all"><i class="ti ti-receipt text-blue-600"></i> <span>Ledger</span></button>
+          <button onclick="switchTab('security')" id="tab-btn-security" class="flex items-center justify-center lg:justify-start gap-2.5 px-3 py-2 text-[11px] sm:text-xs font-semibold rounded-xl text-left transition-all"><i class="ti ti-lock text-blue-600"></i> <span>Policies</span></button>
+        </div>
+        <hr class="my-2 border-slate-100">
+        <button onclick="openBroadcast()" class="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 shadow-sm transition-colors mb-2"><i class="ti ti-broadcast"></i> <span>Global Broadcast</span></button>
+        <a href="index.html" class="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold text-slate-500 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"><i class="ti ti-logout"></i> <span>Exit Terminal</span></a>
+      </div>
+
+      <div class="lg:col-span-3 bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm min-h-[460px]" id="display-canvas"></div>
+    </div>
+  </main>
+
+  <div id="broadcast-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-md w-full border border-slate-200 p-5 sm:p-6 mx-auto">
+      <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-1">Global System Broadcast</h3>
+      <p class="text-xs text-slate-500 mb-4">Dispatches administrative alerts into all active profile streams.</p>
+      <textarea id="broadcast-input" rows="4" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs outline-none focus:ring-2 focus:ring-blue-500 transition-all" placeholder="Type notification payload..."></textarea>
+      <div class="flex justify-end gap-2 mt-4 text-xs font-semibold">
+        <button onclick="closeBroadcast()" class="px-4 py-2 bg-slate-100 rounded-lg">Cancel</button>
+        <button onclick="sendBroadcast()" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-sm">Transmit Alert</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let skNames = ["rahul99", "priya_dev"]; let skEmails = ["rahul@gmail.com", "priya@code.org"]; let skSubs = ["free", "premium"]; let skRatings = [4.5, 4.8]; let skCount = 2;
+    let empNames = ["tcs_hr", "meta_recruiter"]; let empEmails = ["talent@tcs.com", "hiring@meta.com"]; let empCompany = ["Tata Consultancy", "Meta Platforms"]; let empBizType = ["Consulting Services", "Social Technology"]; let empContact = ["+91 98765 43210", "+1 415 888 9999"]; let empCount = 2;
+    let jobTitles = ["Junior Java Architect", "Database Support Engineer", "Python Scripting Intern"]; let jobCompany = ["Tata Consultancy", "Meta Platforms", "Tata Consultancy"]; let jobSkills = ["Java", "SQL", "Python"]; let jobLocations = ["Bangalore", "Hyderabad", "Remote"]; let jobSalary = ["8 LPA", "18 LPA", "4 LPA"]; let jobMinExp = [1, 3, 0]; let jobPostedBy = ["tcs_hr", "meta_recruiter", "tcs_hr"]; let jobStatus = ["open", "pending", "closed"]; let jobCount = 3;
+    let appCount = 4, gigCount = 2, txnCount = 3, fbCount = 2;
+    let fbUser = ["rahul99", "priya_dev"]; let fbText = ["Encountering profile matching delay bugs.", "Excellent response interface speeds."];
+    let txnUser = ["priya_dev", "rahul99", "amit_coder"]; let txnAmount = ["499", "999", "499"]; let txnStatus = ["success", "success", "failed"];
+    let currentTab = 'seekers';
+
+    window.onload = () => switchTab('seekers');
+
+    function updateTelemetry() {
+      let open = jobStatus.filter(s => s === 'open').length; let pending = jobStatus.filter(s => s === 'pending').length; let closed = jobStatus.filter(s => s === 'closed').length;
+      document.getElementById('telemetry-grid').innerHTML = `
+        <div class="bg-white p-4 border border-slate-200 rounded-xl shadow-sm">
+          <span class="text-[10px] font-bold text-slate-400 block tracking-wider uppercase">Active Job Seekers</span>
+          <span class="text-lg sm:text-xl font-bold text-slate-900 block mt-0.5">${skCount} Profiles</span>
+        </div>
+        <div class="bg-white p-4 border border-slate-200 rounded-xl shadow-sm">
+          <span class="text-[10px] font-bold text-slate-400 block tracking-wider uppercase">Registered Employers</span>
+          <span class="text-lg sm:text-xl font-bold text-slate-900 block mt-0.5">${empCount} Entities</span>
+        </div>
+        <div class="bg-white p-4 border border-slate-200 rounded-xl shadow-sm">
+          <span class="text-[10px] font-bold text-slate-400 block tracking-wider uppercase">Jobs Analytics</span>
+          <span class="text-xs font-semibold text-slate-600 block mt-1">Total: ${jobCount} (O:${open} | P:${pending} | C:${closed})</span>
+        </div>
+        <div class="bg-white p-4 border border-slate-200 rounded-xl shadow-sm">
+          <span class="text-[10px] font-bold text-slate-400 block tracking-wider uppercase">System Transmissions</span>
+          <span class="text-xs font-semibold text-slate-600 block mt-1">Apps: ${appCount} | Gigs: ${gigCount} | Txns: ${txnCount}</span>
+        </div>`;
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('[id^="tab-btn-"]').forEach(b => b.classList.remove('bg-slate-100', 'text-blue-700', 'font-bold'));
+      document.getElementById('tab-btn-' + tab).classList.add('bg-slate-100', 'text-blue-700', 'font-bold');
+      updateTelemetry();
+      const canvas = document.getElementById('display-canvas');
+      let html = '';
+
+      if (tab === 'seekers') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Admin Registry Audit: Job Seekers</h3>
+                <div class="overflow-x-auto custom-scrollbar w-full block"><table class="w-full text-left text-xs border-collapse min-w-[500px]">
+                  <thead><tr class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200"><th class="p-3">Username</th><th class="p-3">Email Anchor</th><th class="p-3">Plan Tier</th><th class="p-3">Rating Score</th><th class="p-3 text-right">Row Operation</th></tr></thead>
+                  <tbody class="divide-y divide-slate-100">`;
+        for (let i = 0; i < skCount; i++) {
+          html += `<tr><td class="p-3 font-semibold text-slate-900">${skNames[i]}</td><td class="p-3 text-slate-500">${skEmails[i]}</td><td class="p-3 uppercase"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${skSubs[i] === 'premium' ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-600'}">${skSubs[i]}</span></td><td class="p-3 text-amber-600 font-medium"><i class="ti ti-star-filled"></i> ${skRatings[i].toFixed(1)}</td><td class="p-3 text-right"><button onclick="deleteSeeker(${i})" class="text-rose-600 hover:bg-rose-50 px-2 py-1 rounded border border-rose-100 font-semibold">Delete</button></td></tr>`;
+        }
+        html += `</tbody></table></div>`;
+      } 
+      else if (tab === 'employers') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Admin Registry Audit: Corporate Employers</h3>
+                <div class="overflow-x-auto custom-scrollbar w-full block"><table class="w-full text-left text-xs border-collapse min-w-[550px]">
+                  <thead><tr class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200"><th class="p-3">Username</th><th class="p-3">Enterprise Legal Name</th><th class="p-3">Classification</th><th class="p-3">Direct Contact</th><th class="p-3 text-right">Row Operation</th></tr></thead>
+                  <tbody class="divide-y divide-slate-100">`;
+        for (let i = 0; i < empCount; i++) {
+          html += `<tr><td class="p-3 font-semibold text-slate-900">${empNames[i]}</td><td class="p-3 text-slate-700 font-medium">${empCompany[i]}</td><td class="p-3 text-slate-500">${empBizType[i]}</td><td class="p-3 font-mono text-slate-500">${empContact[i]}</td><td class="p-3 text-right"><button onclick="deleteEmployer(${i})" class="text-rose-600 hover:bg-rose-50 px-2 py-1 rounded border border-rose-100 font-semibold">Delete</button></td></tr>`;
+        }
+        html += `</tbody></table></div>`;
+      }
+      else if (tab === 'jobs') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Open Postings Moderation Pool</h3><div class="space-y-3">`;
+        let pendingFlag = false;
+        for (let i = 0; i < jobCount; i++) {
+          if (jobStatus[i] === 'pending') {
+            pendingFlag = true;
+            html += `<div class="p-4 border border-slate-200 rounded-xl bg-slate-50 flex flex-col sm:flex-row justify-between sm:items-center gap-4 text-xs">
+                      <div>
+                        <p class="font-bold text-slate-900 text-sm">${jobTitles[i]}</p>
+                        <p class="text-slate-500 mt-1">Host Entity: <span class="font-semibold">${jobCompany[i]}</span> | Required Skill: <span class="bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded font-mono font-medium">${jobSkills[i]}</span></p>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Parameters: ${jobLocations[i]} | ${jobSalary[i]} | ${jobMinExp[i]} Yrs Exp</p>
+                      </div>
+                      <div class="flex items-center gap-2 self-end sm:self-center">
+                        <button onclick="setJobStatus(${i}, 'open')" class="px-3 py-1.5 bg-emerald-600 text-white font-semibold rounded-lg shadow-sm">Approve</button>
+                        <button onclick="setJobStatus(${i}, 'rejected')" class="px-3 py-1.5 bg-rose-50 text-rose-700 font-semibold rounded-lg hover:bg-rose-100">Reject</button>
+                      </div>
+                    </div>`;
+          }
+        }
+        if (!pendingFlag) html += `<p class="text-xs text-slate-400 text-center py-6">Pending jobs queue clear.</p>`;
+        html += `<h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-6 mb-2">Platform Position Matrix</h4><div class="divide-y divide-slate-100 text-xs">`;
+        for (let i = 0; i < jobCount; i++) {
+          if (jobStatus[i] !== 'pending') {
+            html += `<div class="py-2 flex justify-between items-center gap-2"><span class="font-medium text-slate-800 truncate">${jobTitles[i]} (${jobCompany[i]})</span><span class="px-2 py-0.5 rounded text-[9px] font-mono font-bold uppercase tracking-wide shrink-0 ${jobStatus[i] === 'open' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-500'}">${jobStatus[i]}</span></div>`;
+          }
+        }
+        html += `</div>`;
+      }
+      else if (tab === 'feedback') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">User Feedback &amp; Tickets</h3><div class="space-y-3">`;
+        if (fbCount === 0) html += `<p class="text-xs text-slate-400 text-center py-8">Inbox clean.</p>`;
+        for (let i = 0; i < fbCount; i++) {
+          html += `<div class="p-3 border border-slate-200 rounded-xl bg-slate-50 text-xs"><div class="flex justify-between items-center mb-1 gap-2"><span class="font-bold text-indigo-600 truncate">User: ${fbUser[i]}</span><span class="text-[10px] text-slate-400 font-mono tracking-wider shrink-0">ID: FB0${i+1}</span></div><p class="text-slate-600 leading-relaxed">${fbText[i]}</p></div>`;
+        }
+        html += `</div>`;
+      }
+      else if (tab === 'transactions') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Billing Ledger</h3>
+                <div class="overflow-x-auto custom-scrollbar w-full block"><table class="w-full text-left text-xs border-collapse min-w-[450px]">
+                  <thead><tr class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200"><th class="p-2.5">User Identity</th><th class="p-2.5">Amount</th><th class="p-2.5">Status</th><th class="p-2.5 text-right">Ref Code</th></tr></thead>
+                  <tbody class="divide-y divide-slate-100">`;
+        for (let i = 0; i < txnCount; i++) {
+          html += `<tr><td class="p-2.5 font-semibold text-slate-900">${txnUser[i]}</td><td class="p-2.5 text-slate-600">Rs. ${txnAmount[i]}</td><td class="p-2.5"><span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wide ${txnStatus[i] === 'success' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${txnStatus[i]}</span></td><td class="p-2.5 text-right font-mono text-slate-400">TXN_STUB_90${i+1}</td></tr>`;
+        }
+        html += `</tbody></table></div>`;
+      }
+      else if (tab === 'security') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Security Policies</h3>
+                <div class="text-xs space-y-3 text-slate-600 leading-relaxed max-w-xl">
+                  <p class="flex items-start gap-2"><i class="ti ti-circle-check text-blue-600 mt-0.5 text-sm shrink-0"></i> <span><strong>Password Protection:</strong> Passwords systematically managed via ciphers.</span></p>
+                  <p class="flex items-start gap-2"><i class="ti ti-circle-check text-blue-600 mt-0.5 text-sm shrink-0"></i> <span><strong>Aadhaar Isolation Strategy:</strong> Secure identifiers locked away safely from frontend exposure layers.</span></p>
+                  <p class="flex items-start gap-2"><i class="ti ti-circle-check text-blue-600 mt-0.5 text-sm shrink-0"></i> <span><strong>RBAC Boundaries:</strong> Controls access routes strictly down individual operational nodes.</span></p>
+                </div>`;
+      }
+      canvas.innerHTML = html;
+    }
+
+    function deleteSeeker(idx) { if (!confirm(`Confirm removal of candidate record '${skNames[idx]}'?`)) return; skNames.splice(idx, 1); skEmails.splice(idx, 1); skSubs.splice(idx, 1); skRatings.splice(idx, 1); skCount--; switchTab('seekers'); }
+    function deleteEmployer(idx) { if (!confirm(`Confirm removal of employer corporate record '${empNames[idx]}'?`)) return; empNames.splice(idx, 1); empEmails.splice(idx, 1); empCompany.splice(idx, 1); empBizType.splice(idx, 1); empContact.splice(idx, 1); empCount--; switchTab('employers'); }
+    function setJobStatus(idx, status) { jobStatus[idx] = status; alert(`Job sequence updated to ${status.toUpperCase()}`); switchTab('jobs'); }
+    function openBroadcast() { document.getElementById('broadcast-modal').style.display = 'flex'; }
+    function closeBroadcast() { document.getElementById('broadcast-modal').style.display = 'none'; }
+    function sendBroadcast() { const text = document.getElementById('broadcast-input').value.trim(); if (!text) return; alert(`Global notification broadcast array update complete.`); document.getElementById('broadcast-input').value = ''; closeBroadcast(); switchTab(currentTab); }
+  </script>
+</body>
+</html>

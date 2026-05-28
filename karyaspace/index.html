@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Portal — KaryaSpace</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f7f8fa;
+      color: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero {
+      padding: 3.5rem 1.5rem 2rem;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 14px;
+      border-radius: 20px;
+      background: #fff;
+      color: #666;
+      border: 0.5px solid #ddd;
+      margin-bottom: 1.25rem;
+      letter-spacing: 0.04em;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 500;
+      color: #111;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero p {
+      font-size: 15px;
+      color: #666;
+      max-width: 480px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem 2.5rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-item { text-align: center; min-width: 100px; }
+
+    .stat-num {
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #111;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: #e0e0e0;
+      margin: 0 auto 2rem;
+    }
+
+    .roles-label {
+      font-size: 12px;
+      color: #999;
+      text-align: center;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      padding: 0 1.5rem 1.5rem;
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #fff;
+      border: 0.5px solid #e0e0e0;
+      border-radius: 14px;
+      padding: 1.5rem 1.25rem 1.25rem;
+      cursor: pointer;
+      transition: border-color 0.18s, transform 0.15s, box-shadow 0.18s;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      border-color: #bbb;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .card.active-admin    { border: 2px solid #378ADD; }
+    .card.active-employer { border: 2px solid #1D9E75; }
+    .card.active-jobseeker { border: 2px solid #7F77DD; }
+
+    .card-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 20px;
+    }
+
+    .card-icon.admin     { background: #E6F1FB; color: #185FA5; }
+    .card-icon.employer  { background: #E1F5EE; color: #0F6E56; }
+    .card-icon.jobseeker { background: #EEEDFE; color: #534AB7; }
+
+    .card h3 {
+      font-size: 15px;
+      font-weight: 500;
+      color: #111;
+      margin-bottom: 5px;
+    }
+
+    .card p {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .card-features {
+      list-style: none;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .card-features li {
+      font-size: 12px;
+      color: #666;
+      padding: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-features li i {
+      font-size: 13px;
+      color: #22a06b;
+    }
+
+    .card-btn {
+      display: block;
+      width: 100%;
+      padding: 9px 0;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 9px;
+      border: 0.5px solid #ccc;
+      background: transparent;
+      color: #333;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .card:hover .card-btn.admin-btn      { background: #E6F1FB; color: #185FA5; border-color: #378ADD; }
+    .card:hover .card-btn.employer-btn   { background: #E1F5EE; color: #0F6E56; border-color: #1D9E75; }
+    .card:hover .card-btn.jobseeker-btn  { background: #EEEDFE; color: #534AB7; border-color: #7F77DD; }
+
+    .selected-panel {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto 1.5rem;
+      padding: 0 1.5rem;
+      display: none;
+    }
+
+    .selected-panel.show { display: block; }
+
+    .panel-inner {
+      padding: 1.25rem;
+      border-radius: 14px;
+      border: 0.5px solid #ddd;
+      background: #f7f8fa;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+    }
+
+    .panel-inner p { font-size: 14px; color: #555; }
+    .panel-inner strong { color: #111; font-weight: 500; }
+
+    .proceed-btn {
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 22px;
+      border-radius: 9px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.15s;
+    }
+
+    .proceed-btn:hover { opacity: 0.88; }
+    .proceed-btn.admin     { background: #378ADD; color: #fff; }
+    .proceed-btn.employer  { background: #1D9E75; color: #fff; }
+    .proceed-btn.jobseeker { background: #7F77DD; color: #fff; }
+
+    .footer-note {
+      text-align: center;
+      font-size: 12px;
+      color: #999;
+      padding: 1rem 1.5rem 2rem;
+      margin-top: auto;
+    }
+
+    .footer-note a {
+      color: #378ADD;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .footer-note a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 2.5rem 1rem 1.5rem; }
+      .hero h1 { font-size: 1.8rem; }
+      .cards { grid-template-columns: 1fr; padding: 0 1rem 1rem; }
+      .panel-inner { flex-direction: column; text-align: center; gap: 1rem; }
+      .proceed-btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="badge">Karya Space</div>
+    <h1>Find the right fit.<br>For everyone.</h1>
+    <p>A unified platform connecting employers with talent, managed seamlessly by administrators.</p>
+
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-num">12,400+</div>
+        <div class="stat-label">Active jobs</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3,200+</div>
+        <div class="stat-label">Employers</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">58,000+</div>
+        <div class="stat-label">Job seekers</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="roles-label">CONTINUE AS</div>
+  </div>
+
+  <div class="cards">
+    <div class="card" id="card-admin" onclick="selectRole('admin')">
+      <div class="card-icon admin"><i class="ti ti-shield-check"></i></div>
+      <h3>Admin</h3>
+      <p>Manage the entire platform, users, and listings.</p>
+      <ul class="card-features">
+        <li><i class="ti ti-check"></i>User management</li>
+        <li><i class="ti ti-check"></i>Analytics &amp; reports</li>
+        <li><i class="ti ti-check"></i>Content moderation</li>
+      </ul>
+      <button class="card-btn admin-btn">Enter as Admin</button>
+    </div>
+
+    <div class="card" id="card-employer" onclick="selectRole('employer')">
+      <div class="card-icon employer"><i class="ti ti-building-skyscraper"></i></div>
+      <h3>Employer</h3>
+      <p>Post jobs, review applications, and hire talent.</p>
+      <ul class="card-features">
+        <li><i class="ti ti-check"></i>Post job listings</li>
+        <li><i class="ti ti-check"></i>Manage applicants</li>
+        <li><i class="ti ti-check"></i>Company profile</li>
+      </ul>
+      <button class="card-btn employer-btn">Enter as Employer</button>
+    </div>
+
+    <div class="card" id="card-jobseeker" onclick="selectRole('jobseeker')">
+      <div class="card-icon jobseeker"><i class="ti ti-user-search"></i></div>
+      <h3>Job Seeker</h3>
+      <p>Search jobs, apply, and track your applications.</p>
+      <ul class="card-features">
+        <li><i class="ti ti-check"></i>Browse &amp; apply to jobs</li>
+        <li><i class="ti ti-check"></i>Resume builder</li>
+        <li><i class="ti ti-check"></i>Application tracker</li>
+      </ul>
+      <button class="card-btn jobseeker-btn">Enter as Job Seeker</button>
+    </div>
+  </div>
+
+  <div class="selected-panel" id="selected-panel">
+    <div class="panel-inner" id="panel-inner">
+      <p id="panel-text"></p>
+      <button class="proceed-btn" id="proceed-btn" onclick="proceed()"></button>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    Already have an account? <a href="#">Sign in</a>
+  </div>
+
+  <script>
+    let selectedRole = null;
+
+    const roles = {
+      admin: {
+        msg: "You're entering as <strong>Admin</strong>. Full platform access.",
+        btnText: 'Go to Admin Login →',
+        redirect: 'admin_login.html'
+      },
+      employer: {
+        msg: "You're entering as an <strong>Employer</strong>. Post jobs and manage applicants.",
+        btnText: 'Go to Employer Login →',
+        redirect: 'employer_login.html'
+      },
+      jobseeker: {
+        msg: "You're entering as a <strong>Job Seeker</strong>. Find and apply for jobs.",
+        btnText: 'Go to Job Seeker Login →',
+        redirect: 'jobseeker_login.html'
+      }
+    };
+
+    const borderColors = {
+      admin: '#378ADD',
+      employer: '#1D9E75',
+      jobseeker: '#7F77DD'
+    };
+
+    function selectRole(role) {
+      selectedRole = role;
+      ['admin', 'employer', 'jobseeker'].forEach(r => {
+        document.getElementById('card-' + r).classList.remove('active-admin', 'active-employer', 'active-jobseeker');
+      });
+      document.getElementById('card-' + role).classList.add('active-' + role);
+
+      const text = document.getElementById('panel-text');
+      const btn  = document.getElementById('proceed-btn');
+      const inner = document.getElementById('panel-inner');
+
+      text.innerHTML = roles[role].msg;
+      btn.textContent = roles[role].btnText;
+      btn.className = 'proceed-btn ' + role;
+      document.getElementById('selected-panel').className = 'selected-panel show';
+      inner.style.borderColor = borderColors[role];
+      
+      if (window.innerWidth <= 600) {
+        setTimeout(() => {
+          document.getElementById('selected-panel').scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+
+    function proceed() {
+      if (selectedRole) {
+        window.location.href = roles[selectedRole].redirect;
+      }
+    }
+  </script>
+</body>
+</html>

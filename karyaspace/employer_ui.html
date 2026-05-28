@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KaryaSpace — Employer Console</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col antialiased">
+
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shrink-0"><i class="ti ti-building-skyscraper"></i></div>
+        <div>
+          <span class="text-sm sm:text-base font-bold text-slate-900 block leading-tight">KaryaSpace Recruiter</span>
+          <span class="text-[10px] sm:text-[11px] text-slate-500 font-semibold tracking-wide uppercase">Enterprise Workspace</span>
+        </div>
+      </div>
+      <div class="text-[10px] sm:text-xs font-bold text-slate-800 bg-slate-100 border border-slate-200 px-3 py-2 rounded-xl shrink-0 truncate max-w-[160px] sm:max-w-none" id="org-identity-label">
+        Enterprise Node: Acme Systems
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex flex-col lg:flex-row gap-6">
+    <div class="w-full lg:w-64 bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-2 lg:space-y-1 shrink-0 h-fit">
+      <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase px-2 mb-2">Corporate Controls</p>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-col gap-1.5">
+        <button onclick="switchTab('company')" id="tab-btn-company" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-building-community text-emerald-600"></i> <span>Metrics Deck</span></button>
+        <button onclick="switchTab('postjob')" id="tab-btn-postjob" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-square-plus text-emerald-600"></i> <span>Deploy Role</span></button>
+        <button onclick="switchTab('listings')" id="tab-btn-listings" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-columns text-emerald-600"></i> <span>Openings</span></button>
+        <button onclick="switchTab('gigs')" id="tab-btn-gigs" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-circle-plus text-emerald-600"></i> <span>Deploy Gig</span></button>
+        <button onclick="switchTab('applications')" id="tab-btn-applications" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-users-group text-emerald-600"></i> <span>Decision Pipeline</span></button>
+        <button onclick="switchTab('comms')" id="tab-btn-comms" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-mail text-emerald-600"></i> <span>Outbox Tool</span></button>
+        <button onclick="switchTab('reviews')" id="tab-btn-reviews" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-mood-smile text-emerald-600"></i> <span>Appraisals Feed</span></button>
+        <button onclick="switchTab('notifications')" id="tab-btn-notifications" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-bell text-emerald-600"></i> <span>Log Alerts</span></button>
+        <button onclick="switchTab('settings')" id="tab-btn-settings" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-lock-square text-emerald-600"></i> <span>Key Cipher</span></button>
+      </div>
+      <hr class="my-2 border-slate-100">
+      <a href="index.html" class="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold text-slate-500 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"><i class="ti ti-logout"></i> <span>Sign Out</span></a>
+    </div>
+
+    <div class="flex-1 bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm min-h-[500px]" id="display-canvas"></div>
+  </main>
+
+  <script>
+    let loggedInUser = "tcs_hr"; let empCompany = "Tata Consultancy"; let empBizType = "Consulting &amp; Strategy Frameworks"; let empContact = "+91 98765 43210";
+    let jobTitles = ["Junior Java Architect", "Database Telemetry Engineer", "Python Operations Analyst"]; let jobSkills = ["Java", "SQL", "Python"]; let jobLocations = ["Bangalore", "Hyderabad", "Remote"]; let jobSalary = ["Rs. 8-12 LPA", "Rs. 18-24 LPA", "Rs. 6-9 LPA"]; let jobMinExp = [1, 3, 0]; let jobPostedBy = ["tcs_hr", "meta_recruiter", "tcs_hr"]; let jobStatus = ["open", "pending", "closed"]; let jobCount = 3;
+    let appJob = ["Junior Java Architect", "Junior Java Architect"]; let appSeeker = ["rahul99", "priya_dev"]; let appStatus = ["applied", "shortlisted"]; let appCount = 2;
+    let chatTo = ["rahul99"]; let chatMsg = ["[SUBJECT: Initial screening alert] Processing requirements check done."]; let chatCount = 1;
+    let revText = ["Excellent resource tracking capabilities verified.", "Great workspace scaling criteria loops."]; let revBy = ["rahul99", "priya_dev"]; let revCount = 2;
+    let notifMsg = ["Recruiter telemetry monitoring workspace online."]; let notifCount = 1;
+
+    window.onload = () => switchTab('company');
+
+    function switchTab(tab) {
+      document.querySelectorAll('[id^="tab-btn-"]').forEach(b => b.classList.remove('bg-slate-100', 'text-emerald-700', 'font-bold'));
+      document.getElementById('tab-btn-' + tab).classList.add('bg-slate-100', 'text-emerald-700', 'font-bold');
+      document.getElementById('org-identity-label').innerText = `Enterprise Node: ${empCompany}`;
+      const canvas = document.getElementById('display-canvas');
+      let html = '';
+
+      if (tab === 'company') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Enterprise Space Node Metrics (FR1)</h3>
+                <form onsubmit="updateCompanyProfile(event)" class="space-y-4 text-xs">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div><label class="block text-slate-400 font-bold mb-1 uppercase tracking-wide">Workspace Handle Identifier</label><input type="text" disabled value="${loggedInUser}" class="w-full bg-slate-100 border border-slate-200 p-2.5 rounded-xl cursor-not-allowed text-slate-500 font-mono outline-none"></div>
+                    <div><label class="block text-slate-400 font-bold mb-1 uppercase tracking-wide">Enterprise Name Context</label><input type="text" id="edit-comp" value="${empCompany}" class="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl focus:bg-white outline-none"></div>
+                  </div>
+                  <div class="space-y-1"><label class="block font-bold text-slate-500 uppercase tracking-wide">Business Classification</label><input type="text" id="edit-biz" value="${empBizType}" class="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl focus:bg-white outline-none"></div>
+                  <div class="space-y-1"><label class="block font-bold text-slate-500 uppercase tracking-wide">Direct Line Access Contact</label><input type="text" id="edit-contact" value="${empContact}" class="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl focus:bg-white outline-none"></div>
+                  <button type="submit" class="px-4 py-2.5 bg-emerald-600 text-white font-bold text-xs rounded-xl shadow-sm hover:bg-emerald-700 transition-all">Commit Registry Variations</button>
+                </form>`;
+      }
+      else if (tab === 'postjob') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">Deploy Framework Requirements Mapping Profile (FR2)</h3>
+                <p class="text-xs text-slate-400 mb-4">Injects structural vacancy requirements metrics into checking loops fields arrays.</p>
+                <form onsubmit="deployJobListing(event)" class="space-y-4 text-xs">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div><label class="block font-bold text-slate-500 uppercase tracking-wide mb-1">Target Descriptive Position Title</label><input type="text" id="job-title" required placeholder="e.g. Lead Core Framework Architect" class="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl outline-none focus:bg-white"></div>
+                    <div><label class="block font-bold text-slate-500 uppercase tracking-wide mb-1">Competency Key Identifier (Single word tag)</label><input type="text" id="job-skill" required placeholder="e.g. Java" class="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl outline-none focus:bg-white"></div>
+                  </div>
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div><label class="block font-bold text-slate-500 uppercase tracking-wide mb-1">Localization Coordinates</label><input type="text" id="job-loc" required placeholder="e.g. Bangalore" class="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl outline-none focus:bg-white"></div>
+                    <div><label class="block font-bold text-slate-500 uppercase tracking-wide mb-1">Remuneration Parameters Scale</label><input type="text" id="job-salary" required placeholder="e.g. Rs. 14-18 LPA" class="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl outline-none focus:bg-white"></div>
+                    <div><label class="block font-bold text-slate-500 uppercase tracking-wide mb-1">Experience Baseline Floor (Yrs)</label><input type="number" id="job-exp" required value="2" class="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl outline-none focus:bg-white"></div>
+                  </div>
+                  <button type="submit" class="w-full py-2.5 bg-emerald-600 text-white font-bold rounded-xl shadow-sm hover:bg-emerald-700 transition-colors">Inject Requirements Profile</button>
+                </form>`;
+      }
+      else if (tab === 'listings') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Organizational Position Track Slots (FR4)</h3><div class="space-y-3 text-xs">`;
+        let listingsCount = 0;
+        for (let i = 0; i < jobCount; i++) {
+          if (jobPostedBy[i].toLowerCase() === loggedInUser.toLowerCase()) {
+            listingsCount++; let badgeColor = jobStatus[i] === 'open' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-500';
+            html += `<div class="p-4 border border-slate-200 rounded-xl bg-slate-50 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                      <div>
+                        <div class="flex items-center gap-2 flex-wrap"><h4 class="font-bold text-slate-900 text-sm">${jobTitles[i]}</h4><span class="px-2 py-0.5 rounded text-[9px] font-mono font-bold uppercase tracking-wide ${badgeColor}">${jobStatus[i]}</span></div>
+                        <p class="text-slate-500 mt-1">Coordinate Mapping: ${jobLocations[i]} | Token target code: <span class="bg-white border px-1 rounded font-mono text-slate-700">${jobSkills[i]}</span></p>
+                      </div>
+                      ${jobStatus[i] === 'open' ? `<button onclick="terminateListing(${i})" class="px-3 py-1.5 bg-white border border-slate-200 text-rose-600 font-semibold rounded-lg hover:bg-rose-50 transition-colors self-start sm:self-center">Kill Execution State</button>` : ''}
+                    </div>`;
+          }
+        }
+        if (listingsCount === 0) html += `<p class="text-xs text-slate-400 text-center py-6">Zero context mappings associated with handle logs.</p>`;
+        html += `</div>`;
+      }
+      else if (tab === 'gigs') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">Deploy Microtask Target Framework Block (FR5)</h3>
+                <p class="text-xs text-slate-400 mb-4">Broadcasts short-term contract structures straight to general tracking feeds, bypassing validation loops.</p>
+                <form onsubmit="deployGigContract(event)" class="space-y-4 text-xs max-w-md mx-auto sm:mx-0">
+                  <div class="space-y-1"><label class="block font-bold text-slate-500 uppercase tracking-wide">Microtask Operational Summary Objective</label><input type="text" id="gig-title" required placeholder="e.g. Core framework optimization routines on index arrays" class="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl outline-none focus:bg-white"></div>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1"><label class="block font-bold text-slate-500 uppercase tracking-wide">Allotted Remuneration Units</label><input type="text" id="gig-budget" required placeholder="e.g. Rs. 8,500" class="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl outline-none focus:bg-white"></div>
+                    <div class="space-y-1"><label class="block font-bold text-slate-500 uppercase tracking-wide">Localization Scope</label><input type="text" id="gig-loc" required placeholder="e.g. Remote" class="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl outline-none focus:bg-white"></div>
+                  </div>
+                  <button type="submit" class="w-full py-2.5 bg-emerald-600 text-white font-bold rounded-xl shadow-sm hover:bg-emerald-700 transition-colors">Broadcast Microtask Structural Block</button>
+                </form>`;
+      }
+      else if (tab === 'applications') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Candidate Filtration Funnel Panel Decisions (FR6)</h3><div class="space-y-4 text-xs">`;
+        let trackingApps = false;
+        for (let i = 0; i < appCount; i++) {
+          trackingApps = true;
+          html += `<div class="p-4 border border-slate-200 bg-slate-50 rounded-xl flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                    <div>
+                      <p class="text-sm font-bold text-slate-900">Applicant Candidate: <span class="text-indigo-600 font-mono font-medium">${appSeeker[i]}</span></p>
+                      <p class="text-slate-500 mt-0.5">Pipeline Position Context: <span class="font-semibold text-slate-700">${appJob[i]}</span></p>
+                      <p class="text-[11px] text-slate-400 mt-0.5">Valuation Tracking Node: <span class="uppercase tracking-wider font-bold text-slate-600">${appStatus[i]}</span></p>
+                    </div>
+                    ${appStatus[i] === 'applied' ? `
+                    <div class="flex items-center gap-2 self-end sm:self-center">
+                      <button onclick="mutateCandidateStatus(${i}, 'shortlisted', '${appSeeker[i]}')" class="px-3 py-1.5 bg-amber-500 text-white font-bold rounded-lg shadow-sm hover:bg-amber-600 transition-colors">Shortlist</button>
+                      <button onclick="mutateCandidateStatus(${i}, 'hired', '${appSeeker[i]}')" class="px-3 py-1.5 bg-emerald-600 text-white font-bold rounded-lg shadow-sm hover:bg-emerald-700 transition-colors">Hire Node</button>
+                    </div>` : `<div class="text-[9px] font-bold text-slate-400 border bg-white px-2 py-1 rounded select-none uppercase tracking-wide shrink-0">Pipeline Locked: ${appStatus[i]}</div>`}
+                  </div>`;
+        }
+        if (!trackingApps) html += `<p class="text-xs text-slate-400 text-center py-6">No applicant parameters logged.</p>`;
+        html += `</div>`;
+      }
+      else if (tab === 'comms') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Inter-Process Comms Outbox Layer Tool (FR8)</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 text-xs">
+                  <form onsubmit="routeCommunications(event)" class="space-y-3 bg-slate-50 p-4 border border-slate-200 rounded-xl h-fit">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Inject Comm Outbound Frame Packet</p>
+                    <div><label class="block mb-0.5 font-medium text-slate-500">Destination Candidate Handle</label><input type="text" id="comm-to" required class="w-full bg-white border border-slate-200 rounded-lg p-2 outline-none"></div>
+                    <div><label class="block mb-0.5 font-medium text-slate-500">Subject Class Header Tag</label><input type="text" id="comm-sub" required class="w-full bg-white border border-slate-200 rounded-lg p-2 outline-none"></div>
+                    <div><label class="block mb-0.5 font-medium text-slate-500">Payload Message Body String</label><textarea id="comm-msg" required rows="3" class="w-full bg-white border border-slate-200 rounded-lg p-2 outline-none"></textarea></div>
+                    <button type="submit" class="w-full py-2 bg-emerald-600 text-white font-bold rounded-lg shadow-sm hover:bg-emerald-700 transition-colors">Route Data Packet</button>
+                  </form>
+                  <div class="lg:col-span-2 space-y-2 border border-slate-100 p-2 rounded-xl max-h-[360px] overflow-y-auto custom-scrollbar">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide px-2 mb-1">Dispatched Traffic Telemetry Logs</p>`;
+        for (let i = 0; i < chatCount; i++) {
+          html += `<div class="p-3 border border-slate-100 bg-slate-50 rounded-xl"><p class="font-bold text-emerald-700">Target Node Match Identity: ${chatTo[i] || 'rahul99'}</p><p class="text-slate-600 mt-1 font-mono bg-white p-2 border border-slate-100 rounded leading-relaxed">${chatMsg[i]}</p></div>`;
+        }
+        html += `</div></div>`;
+      }
+      else if (tab === 'reviews') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Organization Appraisal Registry Feed (FR9)</h3><div class="space-y-3 text-xs">`;
+        for (let i = 0; i < revCount; i++) {
+          html += `<div class="p-4 border border-slate-200 rounded-xl bg-slate-50 flex items-start gap-3"><i class="ti ti-message-2 text-emerald-600 text-lg mt-0.5 shrink-0"></i><div><p class="text-slate-700 font-medium leading-relaxed">${revText[i]}</p><span class="text-[9px] font-bold text-slate-400 block mt-1 uppercase tracking-wider font-mono">Verification Key Signature: ${revBy[i]}</span></div></div>`;
+        }
+        html += `</div>`;
+      }
+      else if (tab === 'notifications') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Workspace Alert Buffer Stream (FR10)</h3><div class="space-y-2 text-xs">`;
+        for (let i = 0; i < notifCount; i++) {
+          html += `<div class="p-3 border-l-2 border-emerald-600 bg-slate-50 rounded-r-xl flex items-start gap-2"><i class="ti ti-bell text-emerald-600 text-base mt-0.5 shrink-0"></i><p class="text-slate-700 font-medium leading-tight">${notifMsg[i]}</p></div>`;
+        }
+        html += `</div>`;
+      }
+      else if (tab === 'settings') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Security Parameters Map (FR12)</h3>
+                <div class="max-w-md space-y-6 text-xs mx-auto sm:mx-0">
+                  <form onsubmit="alert('Access codes rotated.')" class="p-4 border border-slate-200 rounded-xl space-y-3 bg-slate-50">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Rotate Corporate Encryption Token</p>
+                    <div><label class="block mb-0.5 font-medium text-slate-500">Active Token Code Key</label><input type="password" required class="w-full bg-white border border-slate-200 p-2 rounded-lg outline-none"></div>
+                    <div><label class="block mb-0.5 font-medium text-slate-500">Target Next Token Cipher String</label><input type="password" required class="w-full bg-white border border-slate-200 p-2 rounded-lg outline-none" placeholder="Minimum length: 4 tags"></div>
+                    <button type="submit" class="px-3 py-2 bg-emerald-600 text-white font-semibold rounded-lg shadow-sm hover:bg-emerald-700">Recalculate Access Map</button>
+                  </form>
+                  <div class="p-4 border border-rose-200 rounded-xl space-y-3 bg-rose-50/50">
+                    <h4 class="font-bold text-rose-900 text-sm">Purge Corporate Identity Allocation Elements</h4>
+                    <p class="text-slate-500 leading-relaxed">Void organizational data array row tracking cells from memory loops instantly.</p>
+                    <button onclick="purgeCorporateProfile()" class="px-4 py-2 bg-rose-600 text-white font-bold rounded-lg shadow-sm hover:bg-rose-700 transition-colors">Execute Instance Deletion Code</button>
+                  </div>
+                </div>`;
+      }
+      canvas.innerHTML = html;
+    }
+
+    function updateCompanyProfile(e) { e.preventDefault(); empCompany = document.getElementById('edit-comp').value.trim(); empBizType = document.getElementById('edit-biz').value.trim(); empContact = document.getElementById('edit-contact').value.trim(); alert("Success: Organizational variables modified."); switchTab('company'); }
+    function deployJobListing(e) { e.preventDefault(); jobTitles.push(document.getElementById('job-title').value.trim()); jobSkills.push(document.getElementById('job-skill').value.trim()); jobLocations.push(document.getElementById('job-loc').value.trim()); jobSalary.push(document.getElementById('job-salary').value.trim()); jobMinExp.push(parseInt(document.getElementById('job-exp').value)||0); jobPostedBy.push(loggedInUser); jobStatus.push("pending"); jobCount++; alert("Role deployment cached in status PENDING for administrative approval."); switchTab('listings'); }
+    function terminateListing(idx) { jobStatus[idx] = "closed"; alert("Positional structure state tracking transitioned to CLOSED."); switchTab('listings'); }
+    function deployGigContract(e) { e.preventDefault(); alert("Microtask requirements broadcast directly onto system feeds arrays."); switchTab('listings'); }
+    function mutateCandidateStatus(idx, status, seeker) { appStatus[idx] = status; alert(`Selection pipeline updated: Candidate ${seeker} assigned status [${status.toUpperCase()}].`); switchTab('applications'); }
+    function routeCommunications(e) { e.preventDefault(); chatTo.unshift(document.getElementById('comm-to').value.trim()); chatMsg.unshift(`[SUBJECT: ${document.getElementById('comm-sub').value.trim()}] ${document.getElementById('comm-msg').value.trim()}`); chatCount++; alert("Outbound telemetry frame message generated successfully."); switchTab('comms'); }
+    function purgeCorporateProfile() { if(confirm("DANGER OVERRIDE: Void organization matrix indexes completely? Action irreversible.")) { alert("Memory scrub operations complete."); window.location.reload(); } }
+  </script>
+</body>
+</html>

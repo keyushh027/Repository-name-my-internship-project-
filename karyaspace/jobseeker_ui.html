@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KaryaSpace — Seeker Engine</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col antialiased">
+
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shrink-0"><i class="ti ti-user-search"></i></div>
+        <div>
+          <span class="text-sm sm:text-base font-bold text-slate-900 block leading-tight">KaryaSpace Seeker</span>
+          <span class="text-[10px] sm:text-[11px] text-slate-500 font-semibold tracking-wide uppercase">Candidate Deck</span>
+        </div>
+      </div>
+      <div class="text-[10px] sm:text-xs font-bold text-purple-700 bg-purple-50 border border-purple-200 px-2.5 py-1.5 rounded-xl uppercase tracking-wide shrink-0" id="user-tier-label">
+        Context: rahul99 (FREE)
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex flex-col lg:flex-row gap-6">
+    <div class="w-full lg:w-64 bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-2 lg:space-y-1 shrink-0 h-fit">
+      <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase px-2 mb-2">Candidate Tools</p>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-col gap-1.5">
+        <button onclick="switchTab('profile')" id="tab-btn-profile" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-id text-purple-600"></i> <span>Profile Matrix</span></button>
+        <button onclick="switchTab('matching')" id="tab-btn-matching" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-briefcase text-purple-600"></i> <span>Smart Matching</span></button>
+        <button onclick="switchTab('applications')" id="tab-btn-applications" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-file-analytics text-purple-600"></i> <span>Applications</span></button>
+        <button onclick="switchTab('gigs')" id="tab-btn-gigs" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-bolt text-purple-600"></i> <span>Gig Task Mode</span></button>
+        <button onclick="switchTab('tests')" id="tab-btn-tests" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-certificate text-purple-600"></i> <span>Assessment Tests</span></button>
+        <button onclick="switchTab('chat')" id="tab-btn-chat" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-messages text-purple-600"></i> <span>Inbox System</span></button>
+        <button onclick="switchTab('reviews')" id="tab-btn-reviews" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-star text-purple-600"></i> <span>Post Review</span></button>
+        <button onclick="switchTab('alerts')" id="tab-btn-alerts" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-bell text-purple-600"></i> <span>Notifications</span></button>
+        <button onclick="switchTab('support')" id="tab-btn-support" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-headset text-purple-600"></i> <span>Help Desk</span></button>
+        <button onclick="switchTab('security')" id="tab-btn-security" class="flex items-center justify-center lg:justify-start gap-2 px-3 py-2 text-[11px] font-semibold rounded-lg text-left transition-all"><i class="ti ti-settings text-purple-600"></i> <span>Privacy Settings</span></button>
+      </div>
+      <hr class="my-2 border-slate-100">
+      <button onclick="openSubscription()" class="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-[11px] font-bold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-xl transition-all mb-2"><i class="ti ti-premium-rights text-sm"></i> <span>Account Tier Upgrade</span></button>
+      <a href="index.html" class="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold text-slate-500 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"><i class="ti ti-logout"></i> <span>Sign Out</span></a>
+    </div>
+
+    <div class="flex-1 bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm min-h-[520px]" id="display-canvas"></div>
+  </main>
+
+  <div id="sub-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-md w-full border border-slate-200 p-5 sm:p-6 mx-auto">
+      <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">Subscription Billing Port</h3>
+      <div class="space-y-2 text-xs mb-4">
+        <label class="block font-bold text-slate-500 uppercase">Select Target Rank Tier Plan</label>
+        <select id="sub-plan-select" class="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl outline-none" onchange="togglePayFields()">
+          <option value="free">Free Plan — Basic Telemetry (Rs. 0)</option>
+          <option value="premium">Premium Plan — Smart Proximity Matches (Rs. 499/mo)</option>
+          <option value="enterprise">Enterprise Tier — Priority Flag Placements (Rs. 999/mo)</option>
+        </select>
+      </div>
+      <div id="checkout-container" class="hidden space-y-3 pt-2 border-t border-slate-100 text-xs">
+        <div><label class="block font-bold text-slate-400 uppercase tracking-wide mb-1">Payment Method Handshake</label>
+          <select id="pay-method" class="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg"><option>UPI Node Alias</option><option>Credit/Debit Card Vector</option><option>E-Wallet Protocol</option></select>
+        </div>
+        <div><label class="block font-bold text-slate-400 uppercase tracking-wide mb-1">Gateway Parameters Payload</label><input type="text" id="pay-details" class="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg outline-none" placeholder="Provide requested billing information"></div>
+      </div>
+      <div class="flex justify-end gap-2 mt-5 text-xs font-semibold">
+        <button onclick="closeSubscription()" class="px-4 py-2 bg-slate-100 rounded-lg">Dismiss</button>
+        <button onclick="processSubscriptionPayment()" class="px-4 py-2 bg-purple-600 text-white rounded-lg shadow-sm">Execute Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let loggedInUser = "rahul99"; let skName = "Rahul Sharma"; let skEmail = "rahul@gmail.com"; let skAdhaar = "4433-2211-8899";
+    let skSkills = "Java, SQL"; let skInterests = "Backend API Systems"; let skAddress = "Bangalore Sector 4"; let skSub = "free"; let skRating = 4.2; let skRatingCount = 5;
+    let jobTitles = ["Junior Java Architect", "Database Telemetry Engineer", "Python Operations Analyst"]; let jobCompany = ["Tata Consultancy", "Meta Platforms", "Tata Consultancy"]; let jobSkills = ["Java", "SQL", "Python"]; let jobLocations = ["Bangalore", "Hyderabad", "Remote"]; let jobSalary = ["Rs. 8-12 LPA", "Rs. 18-24 LPA", "Rs. 6-9 LPA"]; let jobMinExp = [1, 3, 0]; let jobPostedBy = ["tcs_hr", "meta_recruiter", "tcs_hr"]; let jobStatus = ["open", "open", "closed"]; let jobCount = 3;
+    let appJob = ["Junior Java Architect"]; let appStatus = ["applied"]; let appCount = 1;
+    let gigTitle = ["Fix Spring Boot Mapping Layer", "Deploy Schema Partition Patch"]; let gigBudget = ["Rs. 4,500", "Rs. 12,000"]; let gigLoc = ["Remote", "Bangalore"]; let gigPoster = ["tcs_hr", "meta_recruiter"]; let gigCount = 2;
+    let chatFrom = ["tcs_hr"]; let chatMsg = ["[Alert] Initial testing parameter metrics validated."]; let chatCount = 1;
+    let notifMsg = ["System setup sequence execution complete.", "Your deployed profile is tracking live."]; let notifCount = 2;
+    let testNames = ["Java System Basics", "Python Syntax Structs", "Aptitude Vectors", "Marketing Strategy", "SQL Indexing Basics"]; let testLevels = ["Easy", "Easy", "Medium", "Easy", "Medium"]; let testCount = 5;
+
+    window.onload = () => switchTab('profile');
+
+    function switchTab(tab) {
+      document.querySelectorAll('[id^="tab-btn-"]').forEach(b => b.classList.remove('bg-slate-100', 'text-purple-700', 'font-bold'));
+      document.getElementById('tab-btn-' + tab).classList.add('bg-slate-100', 'text-purple-700', 'font-bold');
+      document.getElementById('user-tier-label').innerText = `Context: ${loggedInUser} (${skSub.toUpperCase()})`;
+      const canvas = document.getElementById('display-canvas');
+      let html = '';
+
+      if (tab === 'profile') {
+        html = `<div class="flex items-center justify-between flex-wrap gap-2 mb-4"><h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Candidate Memory Profile Matrix (FR1)</h3><div class="text-xs text-amber-600 font-bold"><i class="ti ti-star-filled"></i> ${skRating} (${skRatingCount} ratings)</div></div>
+                <form onsubmit="updateProfile(event)" class="space-y-4 text-xs">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div><label class="block text-slate-400 font-bold mb-1 uppercase tracking-wide">Handle Username</label><input type="text" disabled value="${loggedInUser}" class="w-full bg-slate-100 border border-slate-200 rounded-xl p-2.5 font-semibold text-slate-500 cursor-not-allowed outline-none"></div>
+                    <div><label class="block text-slate-400 font-bold mb-1 uppercase tracking-wide">Communications Email</label><input type="text" disabled value="${skEmail}" class="w-full bg-slate-100 border border-slate-200 rounded-xl p-2.5 font-semibold text-slate-500 cursor-not-allowed outline-none"></div>
+                  </div>
+                  <div class="space-y-1"><label class="block font-bold text-slate-500 uppercase tracking-wide">Skills (Comma separated)</label><input type="text" id="edit-skills" value="${skSkills}" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:bg-white outline-none"></div>
+                  <div class="space-y-1"><label class="block font-bold text-slate-500 uppercase tracking-wide">Core Interests</label><input type="text" id="edit-interests" value="${skInterests}" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:bg-white outline-none"></div>
+                  <div class="space-y-1"><label class="block font-bold text-slate-500 uppercase tracking-wide">Base Address Locality</label><input type="text" id="edit-address" value="${skAddress}" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:bg-white outline-none"></div>
+                  <button type="submit" class="px-4 py-2.5 bg-purple-600 text-white font-bold rounded-xl shadow-sm hover:bg-purple-700 transition-colors">Commit Profile Mutations</button>
+                </form>`;
+      }
+      else if (tab === 'matching') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">Smart Profile Matching Engine (FR3)</h3>
+                <p class="text-xs text-slate-400 mb-4">Calculates distance weights inside live arrays dynamically.</p>
+                <div class="bg-slate-50 p-4 border border-slate-200 rounded-xl grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs mb-6">
+                  <div><label class="block font-bold text-slate-500 uppercase mb-1">Experience Threshold (Years)</label><input type="number" id="match-exp" value="2" class="w-full bg-white border border-slate-200 p-2 rounded-lg outline-none"></div>
+                  <div><label class="block font-bold text-slate-500 uppercase mb-1">Preferred Location String</label><input type="text" id="match-loc" placeholder="e.g. Bangalore" class="w-full bg-white border border-slate-200 p-2 rounded-lg outline-none"></div>
+                  <div class="sm:col-span-2"><button onclick="runProximityMatch()" class="w-full py-2 bg-purple-600 text-white font-bold rounded-lg shadow-sm hover:bg-purple-700 transition-colors">Execute Search Pipeline</button></div>
+                </div>
+                <div id="matches-output-container" class="space-y-3"></div>`;
+        setTimeout(runProximityMatch, 10);
+      }
+      else if (tab === 'applications') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Pipeline Tracked Telemetry (FR6)</h3><div class="space-y-3 text-xs">`;
+        for (let i = 0; i < appCount; i++) {
+          html += `<div class="p-4 border border-slate-200 rounded-xl bg-slate-50 flex flex-col sm:flex-row justify-between sm:items-center gap-2"><div><p class="font-bold text-slate-900 text-sm">${appJob[i]}</p><p class="text-[11px] text-slate-400 mt-0.5">Reference Frame: APP_CELL_0${i+1}</p></div><span class="px-2.5 py-1 rounded bg-blue-100 text-blue-800 text-[10px] font-bold uppercase tracking-wide self-start sm:self-center">${appStatus[i]}</span></div>`;
+        }
+        html += `</div>`;
+      }
+      else if (tab === 'gigs') {
+        html = `<div class="flex items-center justify-between flex-wrap gap-2 mb-4"><h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Short-Term Contract Gigs (FR7)</h3><input type="text" id="gig-search" oninput="filterGigs()" placeholder="Filter location string..." class="text-xs bg-slate-50 border border-slate-200 rounded-lg p-1.5 outline-none w-44 focus:bg-white focus:ring-1 focus:ring-purple-500"></div>
+                <div id="gigs-target-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">`;
+        for (let i = 0; i < gigCount; i++) {
+          html += `<div class="p-4 border border-slate-200 rounded-xl bg-slate-50 space-y-2 flex flex-col justify-between" data-loc="${gigLoc[i]}">
+                    <div><div class="flex justify-between items-start gap-2"><h4 class="font-bold text-slate-900 text-sm truncate">${gigTitle[i]}</h4><span class="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded font-bold shrink-0">${gigBudget[i]}</span></div>
+                    <p class="text-slate-500 mt-1">Coordinate: ${gigLoc[i]} | Origin: <span class="font-mono text-indigo-600">${gigPoster[i]}</span></p></div>
+                    <button onclick="alert('Gig payload constraint verified.')" class="w-full py-1.5 bg-white border border-purple-200 text-purple-700 font-semibold rounded-lg hover:bg-purple-50 mt-2 text-center block">Claim Task</button>
+                  </div>`;
+        }
+        html += `</div>`;
+      }
+      else if (tab === 'tests') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">Sandbox Assessment Engine (FR8)</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">`;
+        for (let i = 0; i < testCount; i++) {
+          html += `<div class="p-4 border border-slate-200 bg-slate-50 rounded-xl flex flex-col justify-between items-start gap-3"><div><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-slate-200 text-slate-700 uppercase tracking-wider">${testLevels[i]} Level</span><h4 class="text-sm font-bold text-slate-900 mt-2">${testNames[i]} Validation</h4></div><button onclick="executeMockTest('${testNames[i]}')" class="w-full py-2 bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-600 hover:text-white font-semibold rounded-lg transition-all text-center">Run Verification Script</button></div>`;
+        }
+        html += `</div>`;
+      }
+      else if (tab === 'chat') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Inter-Process Communications Inbox (FR10)</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 text-xs">
+                  <form onsubmit="submitMessage(event)" class="space-y-3 bg-slate-50 p-4 border border-slate-200 rounded-xl h-fit">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Inject Data Packet</p>
+                    <div><label class="block mb-0.5 font-medium text-slate-500">Destination Handle</label><input type="text" id="chat-to" required class="w-full bg-white border border-slate-200 rounded-lg p-2 outline-none"></div>
+                    <div><label class="block mb-0.5 font-medium text-slate-500">Payload Message String</label><textarea id="chat-msg" required rows="3" class="w-full bg-white border border-slate-200 rounded-lg p-2 outline-none"></textarea></div>
+                    <button type="submit" class="w-full py-2 bg-purple-600 text-white font-bold rounded-lg shadow-sm hover:bg-purple-700 transition-colors">Route Frame Data</button>
+                  </form>
+                  <div class="lg:col-span-2 space-y-2 border border-slate-100 p-2 rounded-xl max-h-[340px] overflow-y-auto custom-scrollbar">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide px-2 mb-1">Active Captured Stream</p>`;
+        for (let i = 0; i < chatCount; i++) {
+          html += `<div class="p-3 border border-slate-100 bg-slate-50 rounded-xl"><p class="font-bold text-purple-700">From Node: ${chatFrom[i] || 'tcs_hr'}</p><p class="text-slate-600 mt-1 font-mono bg-white p-2 border border-slate-100 rounded leading-relaxed">${chatMsg[i] || 'Code processing evaluation sequence.'}</p></div>`;
+        }
+        html += `</div></div>`;
+      }
+      else if (tab === 'reviews') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Enterprise Appraisal Registry (FR11)</h3>
+                <form onsubmit="submitReview(event)" class="space-y-3 bg-slate-50 p-4 border border-slate-200 rounded-xl text-xs max-w-md mx-auto sm:mx-0">
+                  <div><label class="block mb-0.5 font-medium text-slate-500">Target Recruiter Handle</label><input type="text" id="rev-to" required class="w-full bg-white border border-slate-200 p-2 rounded-lg outline-none" placeholder="e.g. tcs_hr"></div>
+                  <div><label class="block mb-0.5 font-medium text-slate-500">Numeric Scale Value (1-5)</label><input type="number" min="1" max="5" id="rev-stars" required class="w-full bg-white border border-slate-200 p-2 rounded-lg outline-none" value="5"></div>
+                  <div><label class="block mb-0.5 font-medium text-slate-500">Evaluation Notes Text</label><textarea id="rev-text" required rows="2" class="w-full bg-white border border-slate-200 p-2 rounded-lg outline-none"></textarea></div>
+                  <button type="submit" class="px-4 py-2 bg-purple-600 text-white font-bold rounded-lg shadow-sm hover:bg-purple-700">Publish Appraisal Node</button>
+                </form>`;
+      }
+      else if (tab === 'alerts') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">System Event Log Alerts (FR13)</h3><div class="space-y-2 text-xs">`;
+        for (let i = 0; i < notifCount; i++) {
+          html += `<div class="p-3 border-l-2 border-purple-500 bg-slate-50 rounded-r-xl flex items-start gap-2"><i class="ti ti-info-circle text-purple-600 text-base mt-0.5 shrink-0"></i><p class="text-slate-700 leading-tight">${notifMsg[i]}</p></div>`;
+        }
+        html += `</div>`;
+      }
+      else if (tab === 'support') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Submit Help Desk Query Ticket (FR14)</h3>
+                <form onsubmit="submitQuery(event)" class="space-y-3 bg-slate-50 p-4 border border-slate-200 rounded-xl text-xs max-w-md mx-auto sm:mx-0">
+                  <div><label class="block mb-0.5 font-medium text-slate-500">Query Text Payload</label><textarea id="support-input" required rows="3" class="w-full bg-white border border-slate-200 p-2 rounded-lg outline-none" placeholder="Detail operational delays..."></textarea></div>
+                  <button type="submit" class="px-4 py-2 bg-purple-600 text-white font-bold rounded-lg shadow-sm hover:bg-purple-700">Route Ticket</button>
+                </form>`;
+      }
+      else if (tab === 'security') {
+        html = `<h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Privacy Metrics Configuration (FR15)</h3>
+                <div class="max-w-md space-y-6 text-xs mx-auto sm:mx-0">
+                  <form onsubmit="changePassword(event)" class="p-4 border border-slate-200 rounded-xl space-y-3 bg-slate-50">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Recalculate Password Crypto Key Token</p>
+                    <div><label class="block mb-0.5 font-medium text-slate-500">Current Token Entry</label><input type="password" required class="w-full bg-white border border-slate-200 p-2 rounded-lg outline-none"></div>
+                    <div><label class="block mb-0.5 font-medium text-slate-500">Target Cipher Assignment</label><input type="password" required class="w-full bg-white border border-slate-200 p-2 rounded-lg outline-none" placeholder="Minimum length: 4 tags"></div>
+                    <button type="submit" class="px-3 py-2 bg-purple-600 text-white font-semibold rounded-lg shadow-sm hover:bg-purple-700">Rotate Cipher Key</button>
+                  </form>
+                  <div class="p-4 border border-rose-200 rounded-xl space-y-3 bg-rose-50/50">
+                    <h4 class="font-bold text-rose-900 text-sm">Purge Identity Context Row Allocation</h4>
+                    <p class="text-slate-500 leading-relaxed">Triggers standard system scrub routines down variable fields permanently.</p>
+                    <button onclick="purgeAccount()" class="px-4 py-2 bg-rose-600 text-white font-bold rounded-lg shadow-sm hover:bg-rose-700 transition-colors">Execute Stack Wipe</button>
+                  </div>
+                </div>`;
+      }
+      canvas.innerHTML = html;
+    }
+
+    function updateProfile(e) { e.preventDefault(); skSkills = document.getElementById('edit-skills').value.trim(); skInterests = document.getElementById('edit-interests').value.trim(); skAddress = document.getElementById('edit-address').value.trim(); alert("Success: Candidate configuration variables saved."); switchTab('profile'); }
+    function runProximityMatch() {
+      const exp = parseInt(document.getElementById('match-exp').value) || 0; const loc = document.getElementById('match-loc').value.toLowerCase().trim(); const container = document.getElementById('matches-output-container'); let html = ''; let matchesFound = 0;
+      for (let i = 0; i < jobCount; i++) {
+        if (jobStatus[i] !== 'open') continue; let score = 0;
+        if (skSkills.toLowerCase().includes(jobSkills[i].toLowerCase())) score += 40;
+        if (exp >= jobMinExp[i]) score += 30; if (loc && jobLocations[i].toLowerCase().includes(loc)) score += 30;
+        if (score > 0) {
+          matchesFound++;
+          html += `<div class="p-4 border border-slate-200 rounded-xl bg-white flex flex-col sm:flex-row justify-between sm:items-center gap-4 text-xs">
+                    <div>
+                      <div class="flex items-center gap-2 flex-wrap"><span class="px-2 py-0.5 rounded font-black bg-purple-100 text-purple-700 text-[9px]">MATCH DEPTH: ${score}%</span><h4 class="text-sm font-bold text-slate-900">${jobTitles[i]}</h4></div>
+                      <p class="text-slate-500 mt-1">Enterprise: <span class="font-semibold text-slate-700">${jobCompany[i]}</span> | Competency Required: <span class="bg-slate-100 font-mono text-slate-700 px-1.5 py-0.2 rounded font-medium">${jobSkills[i]}</span></p>
+                      <p class="text-slate-400 text-[11px] mt-0.5">Salary: ${jobSalary[i]} | Local Coordinate: ${jobLocations[i]} | Exp Minimum: ${jobMinExp[i]} Yr(s)</p>
+                    </div>
+                    <button onclick="injectApplication('${jobTitles[i]}', ${i})" class="px-4 py-2 bg-purple-600 text-white font-bold rounded-xl shadow-sm hover:bg-purple-700 transition-colors self-start sm:self-center">Apply</button>
+                  </div>`;
+        }
+      }
+      if (matchesFound === 0) html = `<p class="text-xs text-slate-400 text-center py-6">No matching positions captured within specifications metrics filters.</p>`;
+      container.innerHTML = html;
+    }
+    function injectApplication(title, idx) { for (let i = 0; i < appCount; i++) { if (appJob[i].toLowerCase() === title.toLowerCase()) { alert("Constraint Blocked: Application tracking entry exists."); return; } } appJob.push(jobTitles[idx]); appStatus.push("applied"); appCount++; notifMsg.unshift(`Application verified for '${title}'.`); notifCount++; alert(`Success: Pipeline entry logged for position: ${title}`); switchTab('applications'); }
+    function filterGigs() { const val = document.getElementById('gig-search').value.toLowerCase().trim(); const container = document.getElementById('gigs-target-grid'); Array.from(container.children).forEach(el => { if (!val || el.getAttribute('data-loc').toLowerCase().includes(val)) el.style.display = 'flex'; else el.style.display = 'none'; }); }
+    function executeMockTest(name) { let val = prompt(`SANDBOX EXAM INTERFACE: ${name}\n\nTask 1: Define explicit phrase acronym meaning for Object-Oriented terminology rules (OOP).\n\nEnter matching answer string choice:`); if (val && val.toLowerCase().includes('object')) { alert("TEST PARSER: 10/10 Verification metrics matched."); notifMsg.unshift(`Assessment cleared: '${name}' passed evaluation check.`); notifCount++; } else { alert("TEST PARSER: 0/10 Failure. Expected parameter: 'Object Oriented Programming'"); } switchTab('tests'); }
+    function submitMessage(e) { e.preventDefault(); chatMsg.unshift(document.getElementById('chat-msg').value.trim()); chatFrom.unshift(loggedInUser); chatCount++; alert("Payload routed down outbound security communication channel port."); switchTab('chat'); }
+    function submitReview(e) { e.preventDefault(); alert("Appraisal variables successfully dispatched down database registry tracking matrices."); switchTab('reviews'); }
+    function submitQuery(e) { e.preventDefault(); alert("Query log ticket generated into support staff buffers."); document.getElementById('support-input').value = ''; switchTab('support'); }
+    function changePassword(e) { e.preventDefault(); alert("Security token key modified successfully."); switchTab('security'); }
+    function purgeAccount() { if (confirm("PROTCOL OVERRIDE REQUIRED: Wipe candidate profile storage configurations permanently?")) { alert("Wipe routines completed clean."); window.location.reload(); } }
+    function openSubscription() { document.getElementById('sub-modal').style.display = 'flex'; document.getElementById('sub-plan-select').value = skSub; togglePayFields(); }
+    function closeSubscription() { document.getElementById('sub-modal').style.display = 'none'; }
+    function togglePayFields() { const plan = document.getElementById('sub-plan-select').value; document.getElementById('checkout-container').style.display = (plan === 'free') ? 'none' : 'block'; }
+    function processSubscriptionPayment() { const plan = document.getElementById('sub-plan-select').value; if (plan !== 'free' && !document.getElementById('pay-details').value.trim()) { alert("Constraint Exception: Provide source validation billing strings."); return; } skSub = plan; alert(`Accounting validation complete. Tier set to ${plan.toUpperCase()}`); closeSubscription(); switchTab('profile'); }
+  </script>
+</body>
+</html>
